@@ -1,18 +1,13 @@
 const fs = require("fs");
-var data = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
+let data = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
 
 
-module.exports = function(app) {
-
-    app.get("/api/notes", (req, res) => 
-    res.json(data));
-       
+module.exports =(app) => {
   
-
-    app.get("/api/notes/:id",(req, res) => 
+    app.get("/api/notes/:id",(req, res) => {
     
-    res.json(data[Number(req.params.id)]));
-
+    return res.sendFile(path.join(__dirname, "../db/db.json"));
+  });
 
     app.post("/api/notes", function(req, res) {
         let newNote = req.body;
