@@ -12,16 +12,12 @@ module.exports = (app) => {
   // Below code handles when users "visit" a page.
   // In each of the below cases the user is shown an HTML page of content
 
-  app.get('/tables', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/tables.html'));
+  router.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/notes.html'));
   });
 
-  app.get('/reserve', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/reserve.html'));
+  router.get('/index', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
   });
 
-  // If no matching route is found default to home
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/home.html'));
-  });
 };
