@@ -1,45 +1,65 @@
-const express = require("express");
-const router = express.Router();
+
+const path = require("path");
 const fs = require("fs");
-const db = require("../db/db.json");
 
-router.get("/notes", (req, res) => {
-  console.log(req.query);
-  const noteData = fs.readFileSync("./db/db.json", "utf-8");
-  res.json(JSON.parse(noteData));
-});
+let notesData = [];
 
-router.post("/notes", (req, res) => {
-  console.log(req.body);
+module.exports = (app) => {
+app.get("/api/notes", function(err, res) {
+  try {
+    notesData = fs.readFileSync("db/db.json", "utf8");
+    notesData = JSON.parse(notesData);
 
-  var noteData = fs.readFileSync("./db/db.json", "utf-8");
-
-  console.log(noteData);
-  var notesArray = JSON.parse(noteData);
-  req.body.id = notesArray.length + 1;
-  notesArray.push(req.body);
-  notesArray = JSON.stringify(notesArray);
-  fs.writeFileSync("./db/db.json", notesArray);
-  res.json(true);
-});
-
-router.delete("/notes/:id", (req, res) => {
-  console.log("req.params in delete route 1st, then .id 2nd");
-  console.log(req.params);
-  console.log(req.params.id);
-  var noteData = fs.readFileSync("./db/db.json", "utf-8");
-  var notesArray = JSON.parse(noteData);
-
-  function filterOutById(note) {
-    return note.id !== parseInt(req.params.id);
+  } catch (err) {
+    console.log(err);
   }
-  notesArray = notesArray.filter(filterOutById);
 
-  notesArray = JSON.stringify(notesArray);
-  console.log("Notes array logged below:");
-  console.log(notesArray);
-  fs.writeFileSync("./db/db.json", notesArray);
-  res.json(true);
+  console.log("GET request for /api/notes was successful.");
+  res.json(notesData);
 });
 
-module.exports = router;
+app.post("/api/notes", function(req, res) {
+  try {
+
+    notesData = fs.readFileSync("db/db.json", "utf8");
+    console.log(notesData);
+    notesData = JSON.parse(notesData);
+    req.body.id = notesData.length;
+    notesData.push(req.body); 
+    notesData = JSON.stringify(notesData);
+    fs.writeFile("db/db.json", notesData, "utf8", function(err) {
+      if (err) throw err;
+    });
+
+    res.json(JSON.parse(notesData));
+  
+    
+    } catch (err) {
+      throw err;
+    }
+  });
+  app.delete("/api/notes/:id", function(req, res) {
+    try {
+      notesData = fs.readFileSync("db/db.json", "utf8");
+      notesData = JSON.parse(notesData);
+      notesData = notesData.filter(function(note) {
+        return note.id != req.params.id;
+      });
+   
+      notesData = JSON.stringify(notesData);
+    
+      fs.writeFile("db/db.json", notesData, "utf8", function(err) {
+    
+        if (err) throw err;
+      });
+      console.log("DELETE request for /api/notes/:id was successful.");
+
+      res.send(JSON.parse(notesData));
+  
+     
+    } catch (err) {
+      throw err;
+    }
+  });
+};
+  
