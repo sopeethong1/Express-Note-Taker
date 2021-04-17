@@ -17,8 +17,6 @@ app.get("/api/notes", function(err, res) {
   } catch (err) {
     console.log(err);
   }
-
-  console.log("GET request for /api/notes was successful.");
   res.json(notesData);
 });
 
@@ -56,8 +54,7 @@ app.post("/api/notes", function(req, res) {
     
         if (err) throw err;
       });
-      console.log("DELETE request for /api/notes/:id was successful.");
-
+  
       res.send(JSON.parse(notesData));
   
      
