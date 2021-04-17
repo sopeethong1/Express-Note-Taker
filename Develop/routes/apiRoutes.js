@@ -8,7 +8,8 @@ module.exports = (app) => {
 
 app.get("/api/notes", function(err, res) {
   try {
-    notesData = fs.readFileSync("db/db.json", "utf8");
+    
+    notesData = fs.readFileSync("db/db.json","utf-8");
     notesData = JSON.parse(notesData);
     if (err) throw (err); 
     return res.sendFile(path.json(__dirname, "db/db.json"));
@@ -23,13 +24,13 @@ app.get("/api/notes", function(err, res) {
 app.post("/api/notes", function(req, res) {
   try {
 
-    notesData = fs.readFileSync("db/db.json", "utf8");
+    notesData = fs.readFileSync("db/db.json", "utf-8");
     console.log(notesData);
     notesData = JSON.parse(notesData);
     req.body.id = notesData.length;
     notesData.push(req.body); 
     notesData = JSON.stringify(notesData);
-    fs.writeFile("db/db.json", notesData, "utf8", function(err) {
+    fs.writeFile("db/db.json", notesData, "utf-8", function(err) {
       if (err) throw err;
     });
 
@@ -50,7 +51,7 @@ app.post("/api/notes", function(req, res) {
    
       notesData = JSON.stringify(notesData);
     
-      fs.writeFile("db/db.json", notesData, "utf8", function(err) {
+      fs.writeFile("db/db.json", notesData, "utf-8", function(err) {
     
         if (err) throw err;
       });
