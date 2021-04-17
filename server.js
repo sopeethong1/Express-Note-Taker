@@ -9,6 +9,7 @@ const express = require('express');
 // Tells node that we are creating an "express" server
 const app = express();
 
+
 // Sets an initial port. We"ll use this later in our listener
 const PORT = process.env.PORT || 8080;
 
@@ -16,10 +17,16 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//using built-in middleware to serve static files
+app.use(express.static("public"));
+
 require('./Develop/routes/apiRoutes')(app);
 require('./Develop/routes/htmlRoutes')(app);
 
-      
+//setting directory absolute path to index.html
+app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "/public/index.html"));
+  });
       // Starts the server to begin listening
       
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
