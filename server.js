@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //using built-in middleware to serve static files
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 require('./Develop/routes/apiRoutes')(app);
 require('./Develop/routes/htmlRoutes')(app);
