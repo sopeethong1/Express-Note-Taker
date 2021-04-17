@@ -1,6 +1,8 @@
 // DEPENDENCIES
 // We need to include the path package to get the correct file path for our html
-
+//Using Router middleware 
+const express = require('express')
+const router = express.Router()
 const path = require('path');
 
 // ROUTING
