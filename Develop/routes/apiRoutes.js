@@ -1,5 +1,4 @@
 
-const path = require("path");
 const fs = require("fs");
 
 let notesData = [];
@@ -9,6 +8,11 @@ app.get("/api/notes", function(err, res) {
   try {
     notesData = fs.readFileSync("db/db.json", "utf8");
     notesData = JSON.parse(notesData);
+    return res.sendFile(path.json(__dirname, "db/db.json"));
+    });
+
+
+
 
   } catch (err) {
     console.log(err);
