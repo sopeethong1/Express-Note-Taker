@@ -20,15 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //using built-in middleware to serve static files
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, '/public')));
 
-require('./routes/apiRoutes')(app);
-require('./routes/htmlRoutes')(app);
+require('/routes/apiRoutes')(app);
+require('/routes/htmlRoutes')(app);
 
-//setting directory absolute path to index.html
-app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, './index.html'));
-  });
       // Starts the server to begin listening
       
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));

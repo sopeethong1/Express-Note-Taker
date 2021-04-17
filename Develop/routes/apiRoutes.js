@@ -8,6 +8,7 @@ app.get("/api/notes", function(err, res) {
   try {
     notesData = fs.readFileSync("db/db.json", "utf8");
     notesData = JSON.parse(notesData);
+    if (err) throw (err); 
     return res.sendFile(path.json(__dirname, "db/db.json"));
     });
 
@@ -40,6 +41,7 @@ app.post("/api/notes", function(req, res) {
       throw err;
     }
   });
+  
   app.delete("/api/notes/:id", function(req, res) {
     try {
       notesData = fs.readFileSync("db/db.json", "utf8");
