@@ -27,25 +27,16 @@ module.exports = (app) => {
   // ---------------------------------------------------------------------------
 
   app.post("/api/notes", function(req, res) {
-    try {
-      let idNum = db.length;
-     
-      const body = req.body;
-     
-      Object.assign(body, {id: idNum});
+    let numId = db.length;
+     const body = req.body;
+     Object.assign(body, {id: numId});
 
-      db.push(body);
+        db.push(body);
    
-      dbString = JSON.stringify(db);
+        dbString = JSON.stringify(db);
 
-  // I added this below code so you could clear out the table while working with the functionality.
-  // Don"t worry about it!
-
-  app.post('/api/clear', (req, res) => {
-    // Empty out the arrays of data
-    tableData.length = 0;
-    waitListData.length = 0;
-
-    res.json({ ok: true });
-  });
-};
+        fs.writeFile('db/db.json', 'dbString', function (err) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
+      })}
