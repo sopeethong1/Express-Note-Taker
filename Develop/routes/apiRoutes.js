@@ -1,46 +1,45 @@
 const express = require("express");
-const path = require("path");
+const router = express.Router();
 const fs = require("fs");
-const db = require("./db/db.json");
+const db = require("../db/db.json");
 
-// ROUTING
+router.get("/notes", (req, res) => {
+  console.log(req.query);
+  const noteData = fs.readFileSync("./db/db.json", "utf-8");
+  res.json(JSON.parse(noteData));
+});
 
-module.exports = (app) => {
- 
+router.post("/notes", (req, res) => {
+  console.log(req.body);
 
-  app.get("/api/notes", function (req, res) {
-    res.json(db);
-  });
+  var noteData = fs.readFileSync("./db/db.json", "utf-8");
 
-  app.post("/api/notes", function (req, res) {
-    let numId = db.length;
-    const body = req.body;
-    Object.assign(body, { id: numId });
+  console.log(noteData);
+  var notesArray = JSON.parse(noteData);
+  req.body.id = notesArray.length + 1;
+  notesArray.push(req.body);
+  notesArray = JSON.stringify(notesArray);
+  fs.writeFileSync("./db/db.json", notesArray);
+  res.json(true);
+});
 
-    db.push(body);
+router.delete("/notes/:id", (req, res) => {
+  console.log("req.params in delete route 1st, then .id 2nd");
+  console.log(req.params);
+  console.log(req.params.id);
+  var noteData = fs.readFileSync("./db/db.json", "utf-8");
+  var notesArray = JSON.parse(noteData);
 
-    dbString = JSON.stringify(db);
+  function filterOutById(note) {
+    return note.id !== parseInt(req.params.id);
+  }
+  notesArray = notesArray.filter(filterOutById);
 
-    fs.writeFile("db/db.json", "dbString", function (err) {
-      if (err) throw err;
-      console.log("Saved!");
-    });
+  notesArray = JSON.stringify(notesArray);
+  console.log("Notes array logged below:");
+  console.log(notesArray);
+  fs.writeFileSync("./db/db.json", notesArray);
+  res.json(true);
+});
 
-    app.delete("/api/notes/:id", function (req, res) {
-      const notes = [];
-      const id = req.params.id;
-      notes = fs.readFileSync("./db/db.json", "utf8");
-      notes = JSON.parse(notes);
-      notes = notes.filter(function (note) {
-        return note.id != id;
-      });
-
-      fs.writeFile("db/db.json", "notesString", function (err) {
-        if (err) throw err;
-        console.log("Saved!");
-      });
-
-      res.json(notes);
-    });
-  });
-};
+module.exports = router;
