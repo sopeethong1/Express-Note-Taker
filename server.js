@@ -22,8 +22,8 @@ app.use(express.json());
 //using built-in middleware to serve static files
 app.use(express.static(path.join(__dirname, '/public')));
 
-require('/routes/apiRoutes')(app);
-require('/routes/htmlRoutes')(app);
+require('./Develop/routes/apiRoutes')(app);
+require('./Develop/routes/htmlRoutes')(app);
 
       // Starts the server to begin listening
       
