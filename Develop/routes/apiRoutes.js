@@ -10,12 +10,13 @@ module.exports =(app) => {
   });
 
     app.post("/api/notes", function(req, res) {
-        let newNote = req.body;
+        let notes = data;
+        notes.push(req.body);
         let uniqueId = (data.length).toString();
         console.log(uniqueId);
-        newNote.id = uniqueId;
-        data.push(newNote);
-        
+        notes.id = uniqueId;
+        data.push(notes);
+        res.end()
         fs.writeFileSync("./db/db.json", JSON.stringify(data), function(err) {
             if (err) throw (err);        
         }); 
